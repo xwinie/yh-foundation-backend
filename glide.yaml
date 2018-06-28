@@ -1,0 +1,32 @@
+package: yh-foundation-backend
+import:
+- package: github.com/astaxie/beego
+  version: ~1.9.0
+- package: github.com/casbin/casbin
+  version: ~1.0.0
+- package: github.com/dgrijalva/jwt-go
+  version: ~3.0.0
+- package: github.com/go-sql-driver/mysql
+  version: ~1.3.0
+- package: github.com/mattn/go-sqlite3
+  version: ~1.2.0
+- package: github.com/mitchellh/mapstructure
+- package: github.com/json-iterator/go
+  version: ~1.0.3
+- package: github.com/garyburd/redigo
+  version: ~1.2.0
+  subpackages:
+  - redis
+- package: golang.org/x/net
+  repo: https://github.com/golang/net.git
+  vcs: git
+- package: github.com/issue9/assert
+- package: github.com/jinzhu/gorm
+  version: ~1.0.0
+- package: github.com/jinzhu/inflection
+- package: github.com/mingzhehao/goutils
+  subpackages:
+  - filetool
+testImport:
+- package: github.com/smartystreets/goconvey
+  version: ~1.6.3

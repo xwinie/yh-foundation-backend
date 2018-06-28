@@ -1,0 +1,11 @@
+vendor
+.idea
+yh-foundation-backend.iml
+yh-foundation-backend
+upload.jpg
+tests/static
+downloadupload.jpg
+dist/yh-foundation-backend
+static
+*.log
+.vscode

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <property name="time.default" value="'CURRENT_TIMESTAMP'" dbms="mysql"></property>
+    <property name="time.default" value="CURRENT_TIMESTAMP" dbms="sqlite"></property>
+
+    <preConditions>
+        <dbms type="mysql,sqlite"/>
+    </preConditions>
+
+    <changeSet id="1" author="winie" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="sys_client"/>
+            </not>
+        </preConditions>
+        <createTable tableName="sys_client">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="client_id" type="varchar(200)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="secret" type="varchar(200)"/>
+            <column name="verify_secret" type="varchar(200)"/>
+            <column name="locked" type="TINYINT" defaultValue="0"/>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="2" author="winie" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="sys_resource"/>
+            </not>
+        </preConditions>
+        <createTable tableName="sys_resource">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action" type="varchar(200)"/>
+            <column name="method" type="varchar(200)"/>
+            <column name="is_open" type="TINYINT" defaultValue="0"/>
+            <column name="delete_status" type="TINYINT" defaultValue="0"/>
+            <column name="created" type="DATETIME" defaultValueDate="CURRENT_TIMESTAMP"/>
+            <column name="updated" type="DATETIME" defaultValueDate="${time.default}"/>
+        </createTable>
+        <modifySql dbms="mysql">
+            <regExpReplace replace="'CURRENT_TIMESTAMP'" with="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+            <append value=" engine innodb"/>
+        </modifySql>
+    </changeSet>
+
+
+    <changeSet id="3" author="winie" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="sys_role"/>
+            </not>
+        </preConditions>
+        <createTable tableName="sys_role">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="locked" type="TINYINT" defaultValue="0"/>
+            <column name="delete_status" type="TINYINT" defaultValue="0"/>
+            <column name="created" type="DATETIME" defaultValueDate="CURRENT_TIMESTAMP"/>
+            <column name="updated" type="DATETIME" defaultValueDate="${time.default}"/>
+        </createTable>
+        <modifySql dbms="mysql">
+            <regExpReplace replace="'CURRENT_TIMESTAMP'" with="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+            <append value=" engine innodb"/>
+        </modifySql>
+    </changeSet>
+
+    <changeSet id="4" author="winie" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="sys_role_resource"/>
+            </not>
+        </preConditions>
+        <createTable tableName="sys_role_resource">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="role_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resource_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locked" type="TINYINT" defaultValue="0"/>
+            <column name="delete_status" type="TINYINT" defaultValue="0"/>
+            <column name="created" type="DATETIME" defaultValueDate="CURRENT_TIMESTAMP"/>
+            <column name="updated" type="DATETIME" defaultValueDate="${time.default}"/>
+        </createTable>
+        <modifySql dbms="mysql">
+            <regExpReplace replace="'CURRENT_TIMESTAMP'" with="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+            <append value=" engine innodb"/>
+        </modifySql>
+    </changeSet>
+
+    <changeSet id="5" author="winie" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="sys_user"/>
+            </not>
+        </preConditions>
+        <createTable tableName="sys_user">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="account" type="varchar(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="salt" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locked" type="TINYINT" defaultValue="0"/>
+            <column name="delete_status" type="TINYINT" defaultValue="0"/>
+            <column name="created" type="DATETIME" defaultValueDate="CURRENT_TIMESTAMP"/>
+            <column name="updated" type="DATETIME" defaultValueDate="${time.default}"/>
+        </createTable>
+        <modifySql dbms="mysql">
+            <regExpReplace replace="'CURRENT_TIMESTAMP'" with="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+            <append value=" engine innodb"/>
+        </modifySql>
+    </changeSet>
+
+
+    <changeSet id="6" author="winie" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="sys_user_role"/>
+            </not>
+        </preConditions>
+        <createTable tableName="sys_user_role">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="role_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locked" type="TINYINT" defaultValue="0"/>
+            <column name="delete_status" type="TINYINT" defaultValue="0"/>
+            <column name="created" type="DATETIME" defaultValueDate="CURRENT_TIMESTAMP"/>
+            <column name="updated" type="DATETIME" defaultValueDate="${time.default}"/>
+        </createTable>
+        <modifySql dbms="mysql">
+            <regExpReplace replace="'CURRENT_TIMESTAMP'" with="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+            <append value=" engine innodb"/>
+        </modifySql>
+    </changeSet>
+
+    <changeSet id="7" author="winie" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="sys_dict"/>
+            </not>
+        </preConditions>
+        <createTable tableName="sys_dict">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(100)"/>
+            <column name="city" type="varchar(8)"/>
+            <column name="level" type="int"/>
+            <column name="parent_id" type="int"/>
+            <column name="parent_code" type="varchar(100)"/>
+            <column name="type" type="varchar(6)"/>
+            <column name="locked" type="bigint" defaultValue="0"/>
+            <column name="status" type="TINYINT" defaultValue="0"/>
+            <column name="created" type="DATETIME" defaultValueDate="CURRENT_TIMESTAMP"/>
+            <column name="updated" type="DATETIME" defaultValueDate="${time.default}"/>
+        </createTable>
+        <modifySql dbms="mysql">
+            <regExpReplace replace="'CURRENT_TIMESTAMP'" with="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+            <append value=" engine innodb"/>
+        </modifySql>
+    </changeSet>
+
+    <changeSet id="8" author="winie" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="sys_resource" columnName="res_type"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="sys_resource">
+            <column name="res_type" type="TINYINT" defaultValue="0"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="9" author="winie" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="sys_resource" columnName="parent_id"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="sys_resource">
+            <column name="parent_id" type="bigint" defaultValue="0"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="10" author="winie" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="sys_user" columnName="user_type"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="sys_user">
+            <column name="user_type" type="TINYINT" defaultValue="0"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>
